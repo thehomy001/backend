@@ -1,20 +1,20 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-from django.core.mail import EmailMessage
-from django.conf import settings
-from django.template.loader import render_to_string
+from rest_framework.response import Response
+from core.models import Contact
+from core.serializers import ContactSerializer
+from rest_framework.views import APIView
+from rest_framework import status
 
 # Create your views here.
-def home(request, *args, **kwargs):
-    return JsonResponse({"message": "This is core"})
 
-def success(request,uid):
-    template = render_to_string('core/email_template.html')
-    email = EmailMessage(
-        'Thanks you for signing in',
-        template,
-        settings.EMAIL_HOST_USER,
-        ['pushkar@thehomy.co'],
-    )
-    email.fail_silently=False
-    email.send()
+class ContactView(APIView):
+  def post(self, request, format=None):
+    serializer = ContactSerializer(data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      return Response({'msg':'Thankyou For Conatact Us', 'status':'success', 'candidate':serializer.data}, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors)
+  
+  def get(self, request, format=None):
+    contact = Contact.objects.all()
+    serializer = ContactSerializer(contact, many=True)
+    return Response({'status':'success', 'candidates':serializer.data}, status=status.HTTP_200_OK)

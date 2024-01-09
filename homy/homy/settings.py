@@ -146,8 +146,8 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASS')
 EMAIL_USE_TLS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://192.168.1.22:5173",
 ]
 
 
@@ -193,3 +193,8 @@ SIMPLE_JWT = {
 }
 
 PASSWORD_RESET_TIMEOUT=900     #15minutes
+
+#RAZORPAY
+
+RAZORPAY_KEY_ID=os.environ.get("RAZORPAY_KEY_ID")
+RAZORPAY_KEY_SECRET=os.environ.get("RAZORPAY_KEY_SECRET")
